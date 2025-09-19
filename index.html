@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>先生の居場所入力</title>
+</head>
+<body>
+  <h1>先生の居場所入力</h1>
+
+  <label>先生の名前：
+    <select id="name">
+      <option value="山田太郎">山田太郎</option>
+      <option value="田中花子">田中花子</option>
+      <!-- 必要な先生名をここに追加 -->
+    </select>
+  </label>
+  <br><br>
+
+  <label>居場所：
+    <select id="location">
+      <option value="職員室">職員室</option>
+      <option value="教室">教室</option>
+      <option value="体育館">体育館</option>
+      <option value="グラウンド">グラウンド</option>
+      <!-- 必要な場所をここに追加 -->
+    </select>
+  </label>
+  <br><br>
+
+  <label>コメント：
+    <input type="text" id="comment" placeholder="例：打合せ中">
+  </label>
+  <br><br>
+
+  <button onclick="sendData()">送信</button>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxNs0U2RKK6EVyeS77PK6pyy3VdDn5lekBI4Xc5B0dObhE_Ac7fnp7SqIAnX4QCPMNS/exec';
+
+    async function sendData(){
+      const name = document.getElementById('name').value;
+      const location = document.getElementById('location').value;
+      const comment = document.getElementById('comment').value;
+
+      const data = { name, location, comment };
+
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {'Content-Type':'application/json'}
+      });
+
+      const result = await res.json();
+      if(result.success){
+        alert('送信しました！');
+      } else {
+        alert('送信失敗:' + (result.error||''));
+      }
+    }
+  </script>
+</body>
+</html>
